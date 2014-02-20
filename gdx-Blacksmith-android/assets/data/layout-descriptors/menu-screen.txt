@@ -1,0 +1,10 @@
+debug
+*spacing:10 padding:0 align:center
+'Blacksmith' spacingBottom:20
+---
+[startGameButton] width:300 height:60
+---
+[optionsButton] width:300 height:60
+---
+[exitButton] width:300 height:60
+---

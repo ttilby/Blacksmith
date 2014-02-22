@@ -100,6 +100,11 @@ public abstract class Character implements Serializable {
 		return inventory;
 	}
 	
+	protected Item getItem(int itemID) {
+		// TODO Auto-generated method stub
+		return inventory.getItem(itemID);
+	}
+	
 	public Level getLevel(){
 		return level;
 	}
@@ -332,6 +337,7 @@ public abstract class Character implements Serializable {
 					if(characterInventoryTree.getSelection().size > 0){
 						int itemID = Integer.parseInt(characterInventoryTree.getSelection().first().getActor().getName());
 						Gdx.app.log(Blacksmith.LOG, "buying item: " + itemID);
+						Item item = getItem(itemID);
 					}
 				}else{
 					if(blacksmithInventoryTree.getSelection().size > 0){
@@ -354,6 +360,8 @@ public abstract class Character implements Serializable {
 		window.debug();
 		return window;
 	}
+
+
 	
 //	private class WindowButtonListener extends ChangeListener{
 //		@Override

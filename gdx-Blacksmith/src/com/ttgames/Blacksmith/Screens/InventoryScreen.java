@@ -99,9 +99,9 @@ public class InventoryScreen extends AbstractScreen {
 			public void changed(ChangeEvent event, Actor actor) {
 				Array<Tree.Node> arr = tree.getSelection();
 				int id = Integer.parseInt(arr.get(0).getActor().getName());
-				boolean removed = profile.getBlackSmith().getInventory().removeItemID(id);
-				Gdx.app.log(Blacksmith.LOG, "Selected Item: " + id + " --> Removed: " + removed);
-				if(removed){
+				Item removed = profile.getBlackSmith().getInventory().removeItemID(id);
+				Gdx.app.log(Blacksmith.LOG, "Selected Item: " + id + " --> Removed: " + removed.getName());
+				if(removed != null){
 					tree.remove(arr.get(0));
 				}
 			}

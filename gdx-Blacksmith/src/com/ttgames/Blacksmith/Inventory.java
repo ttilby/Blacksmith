@@ -1,6 +1,10 @@
 package com.ttgames.Blacksmith;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
@@ -11,39 +15,38 @@ import com.ttgames.Blacksmith.Items.Item;
 
 public class Inventory implements Serializable {
 	
-	private Array<Item> items;
+	private Map<Integer, Item> items;
 	
 	public Inventory(){
-		items = new Array<Item>();
+		items = new HashMap<Integer, Item>();
 	}
 	
 	public void addItem(Item i){
-		items.add(i);
+		items.put(i.getItemID(), i);
 	}
 	
-	public boolean removeItem(Item i){
-		return items.removeValue(i, false);
+	public Item getItem(int itemID){
+		return items.get(itemID);
 	}
 	
-	public Item removeIndex(int i){
+	public Item removeItem(Item i){
+		return items.remove(i.getItemID());
+	}
+	
+	/*public Item removeIndex(int i){
 		return items.removeIndex(i);
-	}
+	}*/
 	
-	public boolean removeItemID(int id){
-		for(Item i : items){
-			if(i.getItemID() == id) 
-				return items.removeValue(i, false);
-		}
-		
-		return false;
+	public Item removeItemID(int id){
+		return items.remove(id);
 	}
 	
 	public int getSize(){
-		return items.size;
+		return items.size();
 	}
 	
 	public Iterator<Item> iterator(){
-		return items.iterator();
+		return items.values().iterator();
 	}
 		
 	@Override
@@ -53,6 +56,6 @@ public class Inventory implements Serializable {
 	}
 
 	public void read(Json json, JsonValue jsonData) {
-		items = json.readValue("items", Array.class, jsonData);
+		items = json.readValue("items", HashMap.class, jsonData);
 	}
 }

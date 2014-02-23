@@ -101,7 +101,6 @@ public abstract class Character implements Serializable {
 	}
 	
 	protected Item getItem(int itemID) {
-		// TODO Auto-generated method stub
 		return inventory.getItem(itemID);
 	}
 	
@@ -134,22 +133,22 @@ public abstract class Character implements Serializable {
 	}
 	
 
-	public void sellItem(Character c, Item i, Money m){
+	/*public void sellItem(Character c, Item i, Money m){
 		this.inventory.removeItem(i);
 		c.inventory.addItem(i);
 		
 		this.money.deposit(m.getValue());
 		c.money.withdrawl(m.getValue());
 		Gdx.app.log(Blacksmith.LOG, this.name + " sold item " + i.getName() + " to " + c.getName() + " for " + m.getValue());
-	}
+	}*/
 	
-	public void buyItem(Character c, Item i, Money m){
-		c.inventory.removeItem(i);
-		this.inventory.addItem(i);
+	public void tradeItem(Character c, Item i){
+		this.inventory.removeItem(i);
+		c.inventory.addItem(i);
 		
-		this.money.withdrawl(m.getValue());
-		c.money.deposit(m.getValue());
-		Gdx.app.log(Blacksmith.LOG, this.name + " purchased item " + i.getName() + " from " + c.getName() + " for " + m.getValue());
+		this.money.deposit(i.getValue());
+		c.money.withdrawl(i.getValue());
+		Gdx.app.log(Blacksmith.LOG, this.name + " traded item " + i.getName() + " to " + c.getName() + " for " + i.getValue().toString());
 	}
 	
 	public Tree getCharacterInventoryTree(Blacksmith game, Skin skin){
@@ -159,7 +158,7 @@ public abstract class Character implements Serializable {
 		Gdx.app.log(Blacksmith.LOG, getName() + " has next? " + iter.hasNext());
 		while (iter.hasNext()){
 			Item item = iter.next();
-			
+			Gdx.app.log(Blacksmith.LOG, item.toString());
 			TextButton tb = new TextButton(item.getName(), skin);
 			tb.setName(Integer.toString(item.getItemID()));
 			tb.pad(10);
@@ -268,7 +267,8 @@ public abstract class Character implements Serializable {
 		return tradeWindow;
 	}
 	private Window generateTradeWindow(Blacksmith game, Skin skin){
-		Character blacksmith = game.getProfileManager().retrieveProfile().getBlackSmith();
+		final Character blacksmith = game.getProfileManager().retrieveProfile().getBlackSmith();
+		final Character character = this;
 		
 		final Window window = new Window("", skin);
 		
@@ -338,11 +338,14 @@ public abstract class Character implements Serializable {
 						int itemID = Integer.parseInt(characterInventoryTree.getSelection().first().getActor().getName());
 						Gdx.app.log(Blacksmith.LOG, "buying item: " + itemID);
 						Item item = getItem(itemID);
+						character.tradeItem(blacksmith, item);
 					}
 				}else{
 					if(blacksmithInventoryTree.getSelection().size > 0){
 						int itemID = Integer.parseInt(blacksmithInventoryTree.getSelection().first().getActor().getName());
 						Gdx.app.log(Blacksmith.LOG, "selling item: " + itemID);
+						Item item = getItem(itemID);
+						blacksmith.tradeItem(character, item);
 					}
 				}
 			}

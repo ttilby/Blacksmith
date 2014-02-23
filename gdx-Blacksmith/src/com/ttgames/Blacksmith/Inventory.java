@@ -1,16 +1,14 @@
 package com.ttgames.Blacksmith;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.Serializable;
 import com.badlogic.gdx.utils.JsonValue;
-import com.badlogic.gdx.utils.OrderedMap;
 import com.ttgames.Blacksmith.Items.Item;
 
 public class Inventory implements Serializable {
@@ -32,12 +30,15 @@ public class Inventory implements Serializable {
 	public Item removeItem(Item i){
 		return items.remove(i.getItemID());
 	}
-	
-	/*public Item removeIndex(int i){
-		return items.removeIndex(i);
-	}*/
-	
+
 	public Item removeItemID(int id){
+		Gdx.app.log(Blacksmith.LOG, "removing item: " + id);
+		Gdx.app.log(Blacksmith.LOG, items.getClass().toString());
+		if(items.containsKey(Integer.valueOf(id))){
+			Gdx.app.log(Blacksmith.LOG, "has item : " + id);
+		}else{
+			Gdx.app.error(Blacksmith.LOG, "no item: " + id + " :: items-->" + items.keySet().toString());
+		}
 		return items.remove(id);
 	}
 	

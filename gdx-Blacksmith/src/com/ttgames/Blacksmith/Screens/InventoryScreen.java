@@ -1,23 +1,16 @@
 package com.ttgames.Blacksmith.Screens;
 
-import java.util.Iterator;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
-import com.badlogic.gdx.scenes.scene2d.ui.Tree.Node;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.ttgames.Blacksmith.Blacksmith;
 import com.ttgames.Blacksmith.Profile;
 import com.ttgames.Blacksmith.Items.Item;
-import com.ttgames.Blacksmith.Screens.Components.Components;
 
 public class InventoryScreen extends AbstractScreen {
 	
@@ -100,9 +93,12 @@ public class InventoryScreen extends AbstractScreen {
 				Array<Tree.Node> arr = tree.getSelection();
 				int id = Integer.parseInt(arr.get(0).getActor().getName());
 				Item removed = profile.getBlackSmith().getInventory().removeItemID(id);
-				Gdx.app.log(Blacksmith.LOG, "Selected Item: " + id + " --> Removed: " + removed.getName());
+				
 				if(removed != null){
 					tree.remove(arr.get(0));
+					Gdx.app.log(Blacksmith.LOG, "Selected Item: " + id + " --> Removed: " + removed.getName());
+				}else{
+					Gdx.app.error(Blacksmith.LOG, "ERROR: Item id: " + id + " does not exist!");
 				}
 			}
 		});

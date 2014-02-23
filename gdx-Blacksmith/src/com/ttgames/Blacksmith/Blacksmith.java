@@ -26,7 +26,10 @@ public class Blacksmith extends Game {
 	private static final boolean SHOW_FPS = false;
 	
 	/* used for logging */
-	public static final String LOG = Blacksmith.class.getSimpleName();
+	
+	public static final String TITLE = Blacksmith.class.getSimpleName();
+	public static final String VERSION = "0.0a";
+	public static final String LOG = TITLE + " v" + VERSION;
 	
 	//Logs FPS each second
 	private FPSLogger fpsLogger;

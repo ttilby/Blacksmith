@@ -30,15 +30,28 @@ public class Money {
 		split();
 	}
 	
+	public void deposit(Money m){
+		this.value += m.value;
+		split();
+	}
+	
 	public boolean withdrawl(int w){
 		if(value <= w){
 			value -= w;
 			split();
 			return true;
-		}else{
-			return false;
 		}
+		return false;
 		
+	}
+	
+	public boolean withdrawl(Money m){
+		if(this.value <= m.value){
+			value -= m.value;
+			split();
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -51,6 +64,7 @@ public class Money {
 		silver = MathUtils.floor((value-gold)/100);
 		copper = value - (gold * 1000) - (silver * 100);
 	}
+	
 	
 	/**
 	 * @return the gold
@@ -86,8 +100,15 @@ public class Money {
 		table.add(new Image(game.getAssetManager().get("data/images/copperIcon.png", Texture.class)));
 		table.add(" " + copper + " ");
 		
+		
 		return table;
 	}
 
+	@Override
+	public String toString() {
+		return this.gold + "g " + this.silver + "s " + this.copper + "c (" + this.value + ")";
+	}
+
+	
 		
 }

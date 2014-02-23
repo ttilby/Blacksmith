@@ -7,7 +7,7 @@ public class BlacksmithDesktop {
 	public static void main(String[] args) {
 		
 		ApplicationListener listener = new Blacksmith();
-		String title = "Blacksmith";
+		String title = Blacksmith.TITLE + " v" + Blacksmith.VERSION;
 		int width = 480;
 		int height = 800;
 		boolean useOpenGLES2 = false;

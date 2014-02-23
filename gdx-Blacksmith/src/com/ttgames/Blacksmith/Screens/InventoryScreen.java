@@ -92,11 +92,11 @@ public class InventoryScreen extends AbstractScreen {
 			public void changed(ChangeEvent event, Actor actor) {
 				Array<Tree.Node> arr = tree.getSelection();
 				int id = Integer.parseInt(arr.get(0).getActor().getName());
-				Item removed = profile.getBlackSmith().getInventory().removeItemID(id);
+				boolean removed = profile.getBlackSmith().getInventory().removeItemID(id);
 				
-				if(removed != null){
+				if(removed){
 					tree.remove(arr.get(0));
-					Gdx.app.log(Blacksmith.LOG, "Selected Item: " + id + " --> Removed: " + removed.getName());
+					Gdx.app.log(Blacksmith.LOG, "Selected Item: " + id + " --> Removed");
 				}else{
 					Gdx.app.error(Blacksmith.LOG, "ERROR: Item id: " + id + " does not exist!");
 				}

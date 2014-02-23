@@ -1,8 +1,9 @@
 package com.ttgames.Blacksmith;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
@@ -13,33 +14,39 @@ import com.ttgames.Blacksmith.Items.Item;
 
 public class Inventory implements Serializable {
 	
-	private Map<Integer, Item> items;
+	private List<Item> items;
 	
 	public Inventory(){
-		items = new HashMap<Integer, Item>();
+		items = new ArrayList<Item>();
 	}
 	
 	public void addItem(Item i){
-		items.put(i.getItemID(), i);
+		items.add(i);
 	}
 	
 	public Item getItem(int itemID){
-		return items.get(itemID);
+		for(Item item : items){
+			if(item.getItemID() == itemID){
+				return item;
+			}
+		}
+		return null;
 	}
 	
-	public Item removeItem(Item i){
-		return items.remove(i.getItemID());
+	public boolean removeItem(Item i){
+		return items.remove(i);
 	}
 
-	public Item removeItemID(int id){
+	public boolean removeItemID(int id){
 		Gdx.app.log(Blacksmith.LOG, "removing item: " + id);
 		Gdx.app.log(Blacksmith.LOG, items.getClass().toString());
-		if(items.containsKey(Integer.valueOf(id))){
-			Gdx.app.log(Blacksmith.LOG, "has item : " + id);
-		}else{
-			Gdx.app.error(Blacksmith.LOG, "no item: " + id + " :: items-->" + items.keySet().toString());
+		for(Item item : items){
+			if (item.getItemID() == id){
+				items.remove(item);
+				return true;
+			}
 		}
-		return items.remove(id);
+		return false;
 	}
 	
 	public int getSize(){
@@ -47,7 +54,7 @@ public class Inventory implements Serializable {
 	}
 	
 	public Iterator<Item> iterator(){
-		return items.values().iterator();
+		return items.iterator();
 	}
 		
 	@Override
@@ -57,6 +64,6 @@ public class Inventory implements Serializable {
 	}
 
 	public void read(Json json, JsonValue jsonData) {
-		items = json.readValue("items", HashMap.class, jsonData);
+		items = json.readValue("items", ArrayList.class, jsonData);
 	}
 }

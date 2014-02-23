@@ -5,34 +5,29 @@ import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree.Node;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.Serializable;
 import com.badlogic.gdx.utils.JsonValue;
-import com.badlogic.gdx.utils.OrderedMap;
 import com.ttgames.Blacksmith.Blacksmith;
 import com.ttgames.Blacksmith.Design;
 import com.ttgames.Blacksmith.Inventory;
 import com.ttgames.Blacksmith.Level;
 import com.ttgames.Blacksmith.Level.LevelType;
-import com.ttgames.Blacksmith.Screens.Components.Components;
 import com.ttgames.Blacksmith.Money;
 import com.ttgames.Blacksmith.Items.Item;
 
@@ -334,18 +329,22 @@ public abstract class Character implements Serializable {
 		tradeButton.addListener(new ClickListener(){
 			public void clicked(InputEvent event, float x, float y){
 				if(actionButton.getText().toString().equals("BUY")){
-					if(characterInventoryTree.getSelection().size > 0){
-						int itemID = Integer.parseInt(characterInventoryTree.getSelection().first().getActor().getName());
+					Array<Tree.Node> arr = characterInventoryTree.getSelection();
+					if(arr.size > 0){
+						int itemID = Integer.parseInt(arr.get(0).getActor().getName());
 						Gdx.app.log(Blacksmith.LOG, "buying item: " + itemID);
 						Item item = getItem(itemID);
 						character.tradeItem(blacksmith, item);
+						characterInventoryTree.remove(arr.get(0));
 					}
 				}else{
-					if(blacksmithInventoryTree.getSelection().size > 0){
-						int itemID = Integer.parseInt(blacksmithInventoryTree.getSelection().first().getActor().getName());
+					Array<Tree.Node> arr = blacksmithInventoryTree.getSelection();
+					if(arr.size > 0){
+						int itemID = Integer.parseInt(arr.get(0).getActor().getName());
 						Gdx.app.log(Blacksmith.LOG, "selling item: " + itemID);
 						Item item = getItem(itemID);
 						blacksmith.tradeItem(character, item);
+						blacksmithInventoryTree.remove(arr.get(0));
 					}
 				}
 			}
